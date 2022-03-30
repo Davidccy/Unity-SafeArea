@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class ResolutionResizer : MonoBehaviour {
     public enum ResizeSource { 
-        ScreenSize,
+        ScreenSize,     // System info
         Customize,
     }
 
@@ -15,7 +16,12 @@ public class ResolutionResizer : MonoBehaviour {
     private CanvasScaler _cs = null;
     #endregion
 
+    #region Exposed Fields
+    public Action onChanged;
+    #endregion
+
     #region Internal Fields
+    private ResizeSource _lastRS;
     private ScreenOrientation _lastScreenOri;
     private Vector2 _lastResolution;
     #endregion
@@ -32,10 +38,11 @@ public class ResolutionResizer : MonoBehaviour {
             return;
         }
 
-        if (!IsScreenOrientationChanged() && !IsResolutionChanged()) {
+        if (!IsResizeSourceChanged() && !IsScreenOrientationChanged() && !IsResolutionChanged()) {
             return;
         }
 
+        _lastRS = _rs;
         _lastScreenOri = Screen.orientation;
         _lastResolution = new Vector2(Screen.width, Screen.height);
 
@@ -52,9 +59,17 @@ public class ResolutionResizer : MonoBehaviour {
             _cs.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
             _cs.matchWidthOrHeight = match;
         }
+
+        if (onChanged != null) {
+            onChanged();
+        }
     }
 
-    private bool IsScreenOrientationChanged() { 
+    private bool IsResizeSourceChanged() {
+        return _lastRS != _rs;
+    }
+
+    private bool IsScreenOrientationChanged() {
         return _lastScreenOri != Screen.orientation;
     }
 

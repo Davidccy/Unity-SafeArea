@@ -12,6 +12,8 @@ public class ResolutionInfo : MonoBehaviour {
     [SerializeField]
     private TextMeshProUGUI _textRectCanvasInfo = null;
     [SerializeField]
+    private TextMeshProUGUI _textRectCanvasScaleInfo = null;
+    [SerializeField]
     private TextMeshProUGUI _textRectSaveAreaInfo = null;
 
     [SerializeField]
@@ -34,6 +36,8 @@ public class ResolutionInfo : MonoBehaviour {
         _textSafeAreaInfo.text = string.Format("Unity Safe Area: rect = {0}", Screen.safeArea);
 
         _textRectCanvasInfo.text = string.Format("Rect Canvas Info: w = {0}, h = {1}", _rtCanvas.rect.width, _rtCanvas.rect.height);
+        _textRectCanvasScaleInfo.text = string.Format("Rect Canvas Scale Info: x = {0}, y = {1}, z = {2}",
+            _rtCanvas.localScale.x, _rtCanvas.localScale.y, _rtCanvas.localScale.z);
         _textRectSaveAreaInfo.text = string.Format("Rect Safe Area Info: w = {0}, h = {1}", _rtSafeArea.rect.width, _rtSafeArea.rect.height);
     }
     #endregion
